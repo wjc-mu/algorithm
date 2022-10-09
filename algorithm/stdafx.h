@@ -1,7 +1,7 @@
 #pragma once
-#include "unionfind.hpp"
-#include "bit.hpp"
-#include "fastpow.hpp"
-#include "string_algorithm.hpp"
-#include "array_algorithm.hpp"
-#include "segment_tree.hpp"
+#include "headers/unionfind.hpp"
+#include "headers/bit.hpp"
+#include "headers/fastpow.hpp"
+#include "headers/string_algorithm.hpp"
+#include "headers/array_algorithm.hpp"
+#include "headers/segment_tree.hpp"
