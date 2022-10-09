@@ -1,0 +1,8 @@
+/x64
+/.vs
+/Release
+/Debug
+
+/algorithm/x64
+/algorithm/Debug
+/algorithm/Release
