@@ -128,10 +128,10 @@ private:
 #endif
 
 #ifdef USE_MIN
-
+            minv[node] = std::min(minv[node], val);
 #endif
 #ifdef USE_MAX
-
+            maxv[node] = std::max(maxv[node], val);
 #endif
 
             lazy[node] += val;

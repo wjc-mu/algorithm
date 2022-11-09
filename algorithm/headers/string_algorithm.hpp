@@ -9,7 +9,7 @@ struct StringAlgorithm {
 	//  s是正常的字符串，sa和rk返回以1为开始意义下的数组
 	static void suffix_array(const std::string& s, std::vector<int>& sa, std::vector<int>& rk) {
 		//  调整值域范围，s有时候可以变成vector<int>，此时范围就不能是写死的128了
-		const int value_range = 100005;
+		const int value_range = 256;
 
 		int n = s.size();
 		sa.resize(n + 1);
@@ -50,7 +50,8 @@ struct StringAlgorithm {
 	}
 
 	//  在线构造next，保证len(s) - len(pi) == 1
-	static void addToNext(const std::string& s, std::vector<int>& pi) {
+	static void addToNext(char c, std::string& s, std::vector<int>& pi) {
+		s.push_back(c);
 		int n = pi.size();
 		pi.push_back(0);
 		if (n > 0) {
@@ -64,19 +65,25 @@ struct StringAlgorithm {
 	//  计算pi数组，pi[i]表示s的前缀==s[1:i+1]的后缀的最长长度
 	static std::vector<int> getNext(const std::string& s) {
 		int n = s.size();
-		std::vector<int> pi(n);
-		for (int i = 1; i < n; i++) {
+		std::vector<int> pi(n, 0);
+		for (int i = 1; i < n; ++i) {
 			int j = pi[i - 1];
-			while (j > 0 && s[i] != s[j]) j = pi[j - 1];
-			if (s[i] == s[j]) j++;
-			pi[i] = j;
+			while (j > 0 && s[j] != s[i]) j = pi[j - 1];
+			if (j == 0 && s[0] != s[i]) pi[i] = 0;
+			else pi[i] = j + 1;
 		}
 		return pi;
 	}
 
 	static int kmp(const std::string& s, const std::string& t) {
 		std::vector<int> pi = getNext(t);
-
+		int m = s.size(), n = t.size();
+		int j = 0;
+		for (int i = 0; i < m; ++i) {
+			while (j > 0 && s[i] != t[j]) j = pi[j - 1];
+			if (s[i] == t[j]) j++;
+			if (j == n) return i - n + 1;
+		}
 		return -1;
 	}
 
