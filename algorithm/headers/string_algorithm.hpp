@@ -62,7 +62,7 @@ struct StringAlgorithm {
 		}
 	}
 
-	//  计算pi数组，pi[i]表示s的前缀==s[1:i+1]的后缀的最长长度
+	//  计算pi数组，pi[i]表示s的前缀==s[1:i+1]的后缀的最长长度。
 	static std::vector<int> getNext(const std::string& s) {
 		int n = s.size();
 		std::vector<int> pi(n, 0);
@@ -87,7 +87,7 @@ struct StringAlgorithm {
 		return -1;
 	}
 
-	//  z[i]表示s和s[i:]的最长公共前缀长度
+	//  z[i]表示s和s[i:]的最长公共前缀长度，和pi不同的是，z挪动后缀的起始点，pi挪动后缀的终点。
 	static std::vector<int> z_algorithm(const std::string& s) {
 		//  0--->………………
 		//  …………i--->……
@@ -108,20 +108,18 @@ struct StringAlgorithm {
 	}
 
 	//  返回最长回文区间，左闭右开，下标以0开始
-	std::pair<int, int> manacher(const std::string& str) {
+	static std::pair<int, int> manacher(const std::string& str) {
 		std::string s(str.size() * 2 + 1, '$');
 		for (int i = 0; i < str.size(); ++i) s[i * 2 + 1] = str[i];
 		int n = s.size();
 		std::vector<int> r(n, 1);
-		int right = 0, mid = -1;
+		int mid = 0;
 		for (int i = 0; i < n; ++i) {
+			int right = mid + r[mid];
 			if (i < right) r[i] = std::min(r[2 * mid - i], right - i);
 			while (i + r[i] < n && i - r[i] >= 0 && s[i + r[i]] == s[i - r[i]])
 				r[i]++;
-			if (i + r[i] > right) {
-				right = i + r[i];
-				mid = i;
-			}
+			if (i + r[i] > right) mid = i;
 		}
 		int maxr = 0, maxi = -1;
 		for (int i = 0; i < n; ++i) {
